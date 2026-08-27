@@ -306,16 +306,27 @@ function displayStudents() {
 
     students.forEach(student => {
         const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${student.id}</td>
-            <td>${student.firstName}</td>
-            <td>${student.middleName}</td>
-            <td>${student.lastName}</td>
-            <td>
-                <button class="btn btn-warning btn-sm" onclick="editStudent('${student.id}')">Edit</button>
-                <button class="btn btn-danger btn-sm" onclick="deleteStudent('${student.id}')">Delete</button>
-            </td>
-        `;
+        [student.id, student.firstName, student.middleName, student.lastName].forEach(value => {
+            const cell = document.createElement('td');
+            cell.textContent = value || '';
+            row.appendChild(cell);
+        });
+
+        const actionsCell = document.createElement('td');
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.className = 'btn btn-warning btn-sm mr-1';
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', () => editStudent(student.id));
+
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'btn btn-danger btn-sm';
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => deleteStudent(student.id));
+
+        actionsCell.append(editButton, deleteButton);
+        row.appendChild(actionsCell);
         tableBody.appendChild(row);
     });
 }
